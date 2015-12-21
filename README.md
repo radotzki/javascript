@@ -151,41 +151,6 @@ Other Style Guides
     const item = {};
     ```
 
-  - [3.2](#3.2) <a name='3.2'></a> If your code will be executed in browsers in script context, don't use [reserved words](http://es5.github.io/#x7.6.1) as keys. It won't work in IE8. [More info](https://github.com/airbnb/javascript/issues/61). It’s OK to use them in ES6 modules and server-side code.
-
-    ```javascript
-    // bad
-    const superman = {
-      default: { clark: 'kent' },
-      private: true,
-    };
-
-    // good
-    const superman = {
-      defaults: { clark: 'kent' },
-      hidden: true,
-    };
-    ```
-
-  - [3.3](#3.3) <a name='3.3'></a> Use readable synonyms in place of reserved words.
-
-    ```javascript
-    // bad
-    const superman = {
-      class: 'alien',
-    };
-
-    // bad
-    const superman = {
-      klass: 'alien',
-    };
-
-    // good
-    const superman = {
-      type: 'alien',
-    };
-    ```
-
   <a name="es6-computed-properties"></a>
   - [3.4](#3.4) <a name='3.4'></a> Use computed property names when creating objects with dynamic property names.
 
@@ -2083,98 +2048,46 @@ Other Style Guides
 **[⬆ back to top](#table-of-contents)**
 
 
-## Events
-
-  - [24.1](#24.1) <a name='24.1'></a> When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass a hash instead of a raw value. This allows a subsequent contributor to add more data to the event payload without finding and updating every handler for the event. For example, instead of:
-
-    ```javascript
-    // bad
-    $(this).trigger('listingUpdated', listing.id);
-
-    ...
-
-    $(this).on('listingUpdated', function (e, listingId) {
-      // do something with listingId
-    });
-    ```
-
-    prefer:
-
-    ```javascript
-    // good
-    $(this).trigger('listingUpdated', { listingId: listing.id });
-
-    ...
-
-    $(this).on('listingUpdated', function (e, data) {
-      // do something with data.listingId
-    });
-    ```
-
-  **[⬆ back to top](#table-of-contents)**
-
-
 ## jQuery
 
-  - [25.1](#25.1) <a name='25.1'></a> Prefix jQuery object variables with a `$`.
+  - [25.1](#25.1) <a name='25.1'></a> Do not use jQuery. Use Document.querySelector() for DOM queries.
 
     ```javascript
     // bad
     const sidebar = $('.sidebar');
 
     // good
-    const $sidebar = $('.sidebar');
-
-    // good
-    const $sidebarBtn = $('.sidebar-btn');
+    const sidebar = document.querySelector('.sidebar');
     ```
 
-  - [25.2](#25.2) <a name='25.2'></a> Cache jQuery lookups.
+  - [25.2](#25.2) <a name='25.2'></a> Cache DOM queries lookups.
 
     ```javascript
     // bad
     function setSidebar() {
-      $('.sidebar').hide();
+      document.querySelector('.sidebar').hide();
 
       // ...stuff...
 
-      $('.sidebar').css({
+      document.querySelector('.sidebar').css({
         'background-color': 'pink'
       });
     }
 
     // good
     function setSidebar() {
-      const $sidebar = $('.sidebar');
-      $sidebar.hide();
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.hide();
 
       // ...stuff...
 
-      $sidebar.css({
+      sidebar.css({
         'background-color': 'pink'
       });
     }
     ```
 
-  - [25.3](#25.3) <a name='25.3'></a> For DOM queries use Cascading `$('.sidebar ul')` or parent > child `$('.sidebar > ul')`. [jsPerf](http://jsperf.com/jquery-find-vs-context-sel/16)
-  - [25.4](#25.4) <a name='25.4'></a> Use `find` with scoped jQuery object queries.
-
-    ```javascript
-    // bad
-    $('ul', '.sidebar').hide();
-
-    // bad
-    $('.sidebar').find('ul').hide();
-
-    // good
-    $('.sidebar ul').hide();
-
-    // good
-    $('.sidebar > ul').hide();
-
-    // good
-    $sidebar.find('ul').hide();
-    ```
+  - [25.3](#25.3) <a name='25.3'></a> For DOM queries use Cascading `document.querySelector('.sidebar ul')` or parent > child `document.querySelector('.sidebar > ul')`.
 
 **[⬆ back to top](#table-of-contents)**
 
